@@ -19,4 +19,6 @@ pip list
 cat requirements.txt
 pip install -r requirements.txt
 pip list
-hisotry
+
+git init
+git config --global init.defaultBranch main
