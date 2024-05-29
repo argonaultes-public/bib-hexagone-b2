@@ -1,19 +1,102 @@
 class Book:
-    def __init__(self, title, author, content):
+    global_id = 0
+
+    def __init__(self, title, author, content, id=None):
+        if id == None:
+            self.__id = Book.global_id
+            Book.global_id = Book.global_id + 1
+        else:
+            self.__id = id
         self.__title = title
         self.__author = author
         self.__content = content
 
-    def __str__(self):
-        return f'this is a book {self.__title}'
-    
+    @property
+    def id(self):
+        return self.__id
 
-library = []
+    @property
+    def author(self):
+        return self.__author
 
-if __name__ == '__main__':
-    pass
-    # read input from user to handle library collection
-    # create
-    # read
-    # update
-    # delete
+    @author.setter
+    def author(self, value):
+        if len(value) > 3:
+            self.__author = value
+
+    @property
+    def title(self):
+        return self.__title
+
+    @title.setter
+    def title(self, value):
+        if value != None:
+            self.__title = value
+
+    @property
+    def content(self):
+        return self.__content
+
+    @content.setter
+    def content(self, value):
+        if value != None:
+            self.__content = content
+
+    def __str__(self) -> str:
+        return f"{self.__title}, {self.__author}"
+
+    def __eq__(self, other):
+        return self.__id == other.__id
+
+
+class MyLibrary:
+    def __init__(self):
+        self.__library = []
+
+    def add_book(self, book):
+        self.__library.append(book)
+
+    def delete_book(self, book):
+        self.__library.remove(book)
+
+    def update_book(self, book):
+        for book_in_lib in self.__library:
+            if book.id == book_in_lib:
+                book_in_lib.title = book.title
+                book_in_lib.author = book.author
+                book_in_lib.content = book.content
+
+    def list_books(self):
+        for book in self.__library:
+            print(book)
+
+
+def input_book():
+    title = input("title: ")
+    author = input("author: ")
+    content = input("content: ")
+    return title, content, author
+
+
+if __name__ == "__main__":
+    mylib = MyLibrary()
+    action = ""
+    while action != "q":
+        action = input("choose action: ")
+        print(f"triggered action: {action}")
+        match action:
+            case "update":
+                id = int(input("id: "))
+                title, content, author = input_book()
+                book = Book(author=author, title=title, content=content, id=id)
+                mylib.update_book(book)
+            case "new":
+                title, content, author = input_book()
+                book = Book(author=author, title=title, content=content)
+                mylib.add_book(book)
+            case "delete":
+                mylib.delete_book()
+            case "list":
+                mylib.list_books()
+            case _:
+                pass
