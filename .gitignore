@@ -164,6 +164,7 @@ cython_debug/
 # virtual env
 bibenv
 bibenv2
+bibenv3
 
 # data
 save.json
