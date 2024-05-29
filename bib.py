@@ -1,4 +1,6 @@
 import jsonpickle
+import os
+from typing import Final
 
 class Book:
     global_id = 0
@@ -52,6 +54,8 @@ class Book:
 
 
 class MyLibrary:
+    REPO_FILE: Final[str] = 'save.json'
+
     def __init__(self):
         self.__library = []
         self.__load()
@@ -74,12 +78,13 @@ class MyLibrary:
             print(book)
 
     def __load(self):
-        with open('save.json', 'r') as f:
-            strjson = f.read()
-            self.__library = jsonpickle.decode(strjson)._MyLibrary__library
+        if os.path.exists(self.REPO_FILE):
+            with open(self.REPO_FILE, 'r') as f:
+                strjson = f.read()
+                self.__library = jsonpickle.decode(strjson)._MyLibrary__library
 
     def save(self):
-        with open('save.json', 'w') as f:
+        with open(self.REPO_FILE, 'w') as f:
             f.write(jsonpickle.encode(self))
 
 
