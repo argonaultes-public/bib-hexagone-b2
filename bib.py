@@ -1,3 +1,5 @@
+import jsonpickle
+
 class Book:
     global_id = 0
 
@@ -43,7 +45,7 @@ class Book:
             self.__content = content
 
     def __str__(self) -> str:
-        return f"{self.__title}, {self.__author}"
+        return f"{self.__id}: {self.__title}, {self.__author}"
 
     def __eq__(self, other):
         return self.__id == other.__id
@@ -52,16 +54,17 @@ class Book:
 class MyLibrary:
     def __init__(self):
         self.__library = []
+        self.__load()
 
     def add_book(self, book):
         self.__library.append(book)
 
-    def delete_book(self, book):
-        self.__library.remove(book)
+    def delete_book(self, id):
+        self.__library = [book for book in self.__library if book.id != id]
 
     def update_book(self, book):
         for book_in_lib in self.__library:
-            if book.id == book_in_lib:
+            if book.id == book_in_lib.id:
                 book_in_lib.title = book.title
                 book_in_lib.author = book.author
                 book_in_lib.content = book.content
@@ -69,6 +72,16 @@ class MyLibrary:
     def list_books(self):
         for book in self.__library:
             print(book)
+
+    def __load(self):
+        with open('save.json', 'r') as f:
+            strjson = f.read()
+            self.__library = jsonpickle.decode(strjson)._MyLibrary__library
+
+    def save(self):
+        with open('save.json', 'w') as f:
+            f.write(jsonpickle.encode(self))
+
 
 
 def input_book():
@@ -82,6 +95,7 @@ if __name__ == "__main__":
     mylib = MyLibrary()
     action = ""
     while action != "q":
+        mylib.save()
         action = input("choose action: ")
         print(f"triggered action: {action}")
         match action:
@@ -95,7 +109,8 @@ if __name__ == "__main__":
                 book = Book(author=author, title=title, content=content)
                 mylib.add_book(book)
             case "delete":
-                mylib.delete_book()
+                id = int(input("id: "))
+                mylib.delete_book(id)
             case "list":
                 mylib.list_books()
             case _:
