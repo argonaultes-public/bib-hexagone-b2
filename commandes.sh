@@ -22,3 +22,21 @@ pip list
 
 git init
 git config --global init.defaultBranch main
+
+# create the image
+docker build -t bib:latest .
+
+# create a container and map the local save.json with container version
+docker run -it --rm -v ./save.json:/app/save.json  bib:latest python /app/bib.py
+
+# create client image
+docker build -t bibclient:latest -f Dockerfile-client .
+
+# create server image
+docker build -t bibserver:latest -f Dockerfile-server .
+
+# run client container
+docker run -it -e BIB_PORT=8888 -e BIB_HOST=172.17.0.2 bibclient:latest
+
+# run server container
+docker run -p 9999:8888 -e BIB_PORT=8888 -e BIB_HOST=0.0.0.0 -v ./save.json:/app/save.json  bibserver:latest
