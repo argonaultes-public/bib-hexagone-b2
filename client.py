@@ -9,7 +9,7 @@ def input_book():
 
 class RemoteLib:
 
-    def __init__(self, host = 'localhost', port = 9998):
+    def __init__(self, host = 'localhost', port = 9999):
         self.__host = host
         self.__port = port
 

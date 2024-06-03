@@ -128,6 +128,6 @@ def process_request(action, title = None, author = None, content = None, id = No
 
 
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 9998
+    HOST, PORT = os.getenv('BIB_HOST', 'localhost'), int(os.getenv('BIB_PORT', 9999))
     with socketserver.TCPServer((HOST, PORT), MyServerTCP) as server:
         server.serve_forever()

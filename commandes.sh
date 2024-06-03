@@ -28,3 +28,11 @@ docker build -t bib:latest .
 
 # create a container and map the local save.json with container version
 docker run -it --rm -v ./save.json:/app/save.json  bib:latest python /app/bib.py
+
+# create client image
+docker build -t bibclient:latest -f Dockerfile-client .
+
+# create server image
+docker build -t bibserver:latest -f Dockerfile-server .
+
+# 
