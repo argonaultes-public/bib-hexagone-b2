@@ -9,7 +9,7 @@ def input_book():
 
 class RemoteLib:
 
-    def __init__(self, host = 'localhost', port = 9999):
+    def __init__(self, host = 'localhost', port = 9998):
         self.__host = host
         self.__port = port
 
@@ -24,16 +24,16 @@ class RemoteLib:
             print('Connection refused: retry the action again in a moment')
 
     def update_book(self, author, title, content, id):
-        self.__send_data(f'update,{author},{title},{content},{id}')
+        self.__send_data(f'update,{title},{author},{content},{id}')
 
     def add_book(self, author, title, content):
-        self.__send_date(f'new,{author},{title},{content}')
+        self.__send_data(f'new,{title},{author},{content},')
 
     def list_books(self):
-        self.__send_data('list')
+        self.__send_data('list,,,,')
 
     def delete(self, id):
-        self.__send_data(f'delete,{id}')
+        self.__send_data(f'delete,,,,{id}')
 
 if __name__ == "__main__":
     mylib = RemoteLib()
