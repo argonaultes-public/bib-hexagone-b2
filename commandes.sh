@@ -35,4 +35,8 @@ docker build -t bibclient:latest -f Dockerfile-client .
 # create server image
 docker build -t bibserver:latest -f Dockerfile-server .
 
-# 
+# run client container
+
+
+# run server container
+docker run -p 9999:8888 -e BIB_PORT=8888 -e BIB_HOST=0.0.0.0 -v ./save.json:/app/save.json  bibserver:latest

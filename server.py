@@ -130,4 +130,5 @@ def process_request(action, title = None, author = None, content = None, id = No
 if __name__ == "__main__":
     HOST, PORT = os.getenv('BIB_HOST', 'localhost'), int(os.getenv('BIB_PORT', 9999))
     with socketserver.TCPServer((HOST, PORT), MyServerTCP) as server:
+        print(f'listening on {HOST}:{PORT}')
         server.serve_forever()

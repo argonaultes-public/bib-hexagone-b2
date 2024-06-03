@@ -1,4 +1,4 @@
-import socket
+import socket, os
 
 
 def input_book():
@@ -36,7 +36,10 @@ class RemoteLib:
         self.__send_data(f'delete,,,,{id}')
 
 if __name__ == "__main__":
-    mylib = RemoteLib()
+    mylib = RemoteLib(
+        host = os.getenv('BIB_HOST', 'localhost'),
+        port = int(os.getenv('BIB_PORT', 9999))
+    )
     action = ""
     while action != "q":
         action = input("choose action: ")
