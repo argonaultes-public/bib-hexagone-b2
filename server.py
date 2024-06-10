@@ -54,9 +54,12 @@ class Book:
     @content.setter
     def content(self, value):
         if value != None:
-            self.__content = content
+            self.__content = value
 
     def __str__(self) -> str:
+        return f"{self.__id}: {self.__title}, {self.__author}"
+
+    def __repr__(self) -> str:
         return f"{self.__id}: {self.__title}, {self.__author}"
 
     def __eq__(self, other):
@@ -74,7 +77,7 @@ class MyLibrary:
         self.__library.append(book)
 
     def delete_book(self, id):
-        self.__library = [book for book in self.__library if book.id != id]
+        self.__library = [book for book in self.__library if book.id != int(id)]
 
     def update_book(self, book):
         for book_in_lib in self.__library:
@@ -108,7 +111,7 @@ def process_request(action, title = None, author = None, content = None, id = No
     response = ''
     match action:
         case "update":
-            book = Book(author=author, title=title, content=content, id=id)
+            book = Book(author=author, title=title, content=content, id=int(id))
             mylib.update_book(book)
             response = f'Book updated: {book}'
         case "new":
@@ -117,7 +120,7 @@ def process_request(action, title = None, author = None, content = None, id = No
             response = f'Book added: {book}'
         case "delete":
             mylib.delete_book(id)
-            response = f'Book with id {id} deleted'
+            response = f'Book with id {id} deleted ...'
         case "list":
             response = mylib.list_books()
         case _:
