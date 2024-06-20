@@ -1,7 +1,10 @@
+from prometheus_client import start_http_server, Counter
 import jsonpickle
 import os
 from typing import Final
 import socketserver
+
+count_add = Counter('count_add_book', 'Count the number of books added')
 
 class MyServerTCP(socketserver.BaseRequestHandler):
     def handle(self):
@@ -74,6 +77,7 @@ class MyLibrary:
         self.__load()
 
     def add_book(self, book):
+        count_add.inc()
         self.__library.append(book)
 
     def delete_book(self, id):
@@ -131,6 +135,7 @@ def process_request(action, title = None, author = None, content = None, id = No
 
 
 if __name__ == "__main__":
+    start_http_server(9000)
     HOST, PORT = os.getenv('BIB_HOST', 'localhost'), int(os.getenv('BIB_PORT', 9999))
     with socketserver.TCPServer((HOST, PORT), MyServerTCP) as server:
         print(f'listening on {HOST}:{PORT}')

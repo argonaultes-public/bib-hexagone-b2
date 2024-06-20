@@ -44,3 +44,5 @@ docker run -it -e BIB_PORT=8888 -e BIB_HOST=172.17.0.2 -v ./client.py:/app/clien
 # run server container
 docker run -p 9999:8888 -e BIB_PORT=8888 -e BIB_HOST=0.0.0.0 -v ./save.json:/app/save.json  bibserver:latest
 
+# run prometheus
+docker run -d -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml -p 9090:9090 prom/prometheus
