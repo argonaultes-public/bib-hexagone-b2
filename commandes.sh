@@ -46,3 +46,6 @@ docker run -p 9999:8888 -e BIB_PORT=8888 -e BIB_HOST=0.0.0.0 -v ./save.json:/app
 
 # run prometheus
 docker run -d -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml -p 9090:9090 prom/prometheus
+
+# run custom exporter postgresql
+docker run -e DATA_SOURCE_NAME="postgresql://postgres:password@172.17.0.2:5432/human_bot_db?sslmode=disable" quay.io/prometheuscommunity/postgres-exporter

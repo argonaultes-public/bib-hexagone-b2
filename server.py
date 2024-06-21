@@ -1,10 +1,11 @@
-from prometheus_client import start_http_server, Counter
+from prometheus_client import start_http_server, Counter, Gauge
 import jsonpickle
 import os
 from typing import Final
 import socketserver
 
 count_add = Counter('count_add_book', 'Count the number of books added')
+nb_books = Gauge('total_books', 'Nb of total books in library')
 
 class MyServerTCP(socketserver.BaseRequestHandler):
     def handle(self):
@@ -78,9 +79,11 @@ class MyLibrary:
 
     def add_book(self, book):
         count_add.inc()
+        nb_books.inc()
         self.__library.append(book)
 
     def delete_book(self, id):
+        nb_books.dec()
         self.__library = [book for book in self.__library if book.id != int(id)]
 
     def update_book(self, book):
@@ -101,6 +104,8 @@ class MyLibrary:
             with open(self.REPO_FILE, 'r') as f:
                 strjson = f.read()
                 self.__library = jsonpickle.decode(strjson)._MyLibrary__library
+                print(len(self.__library))
+                nb_books.set(len(self.__library))
 
     def save(self):
         with open(self.REPO_FILE, 'w') as f:
