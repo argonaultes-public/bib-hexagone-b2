@@ -107,6 +107,10 @@ class MyLibrary:
                 print(len(self.__library))
                 nb_books.set(len(self.__library))
 
+    @property
+    def library(self):
+        return self.__library
+
     def save(self):
         with open(self.REPO_FILE, 'w') as f:
             f.write(jsonpickle.encode(self))
@@ -132,6 +136,8 @@ def process_request(action, title = None, author = None, content = None, id = No
             response = f'Book with id {id} deleted ...'
         case "list":
             response = mylib.list_books()
+        case "list_json":
+            response = jsonpickle.encode(mylib.library)
         case _:
             response = 'Unsupported action: {action}'
     mylib.save()
